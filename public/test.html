@@ -78,7 +78,7 @@
 
             // 显示收到的内容块
             output.innerHTML += chunk.value;
-	    console.log("data==>"+chunk.value)
+	    console.log("data==>"+chunk.toString("utf8"))
 
             // 继续阅读可读流中的其他content chunk.
             reader.read().then(read);
