@@ -12,33 +12,33 @@
     <script>
       const output = document.getElementById('output');
 
-      // ¶¨Òå²¢±àÂë°üº¬Òª·¢ËÍµ½APIµÄÊý¾ÝµÄJavaScript¶ÔÏó¡£
+      // å®šä¹‰å¹¶ç¼–ç åŒ…å«è¦å‘é€åˆ°APIçš„æ•°æ®çš„JavaScriptå¯¹è±¡ã€‚
       const requestData = {
 				model: 'gpt-3.5-turbo',
 				messages: [
 				  {
 				    "role": "system",
-				    "content": "This is a summary of the chat history between the AI and the user as a recap: ChatGPT NextÒÆÖ²Î¢ÐÅÐ¡³ÌÐò£¬ÐèÒªÊµÏÖÓïÑÔÄ£ÐÍ¡¢ÓÃ»§½çÃæÉè¼Æ¡¢ºó¶ËµÈ¡£"
+				    "content": "This is a summary of the chat history between the AI and the user as a recap: ChatGPT Nextç§»æ¤å¾®ä¿¡å°ç¨‹åºï¼Œéœ€è¦å®žçŽ°è¯­è¨€æ¨¡åž‹ã€ç”¨æˆ·ç•Œé¢è®¾è®¡ã€åŽç«¯ç­‰ã€‚"
 				  },
 				  {
 				    "role": "user",
-				    "content": "ÓÐÃ»ÓÐnext.jsµÄ½Ì³Ì"
+				    "content": "æœ‰æ²¡æœ‰next.jsçš„æ•™ç¨‹"
 				  },
 				  {
 				    "role": "assistant",
-				    "content": "µ±È»ÓÐ°¡£¬Next.jsÊÇÒ»¸ö»ùÓÚReactµÄ·þÎñ¶ËäÖÈ¾¿ò¼Ü¡£ÔÚÑ§Ï°Ö®Ç°ÄãÐèÒªÏÈÁË½âÒ»Ð©React¼¼ÊõÕ»µÄ»ù´¡ÖªÊ¶¡£\n\n¹Ù·½ÎÄµµÊÇ¾ø¼ÑÑ¡Ôñ£ºhttps://nextjs.org/docs/getting-started\n\n³ý´ËÖ®Íâ£¬»¹¿ÉÒÔ²Î¿¼ÒÔÏÂ×ÊÔ´£º\n\n- Next.js Tutorial - Step-by-step guide for beginners£¨Ó¢ÎÄ£©: https://www.youtube.com/watch?v=tt3PUvhOVzo\n- React ·þÎñ¶ËäÖÈ¾¿ò¼Ü¶Ô±È-next.js vs after.js: https://juejin.cn/post/6844904061939394574\n- »ùÓÚ TypeScript ºÍ Next.js µÄÈ«Õ»ÉçÇøÏîÄ¿ÊµÕ½½Ì³Ì: https://juejin.cn/book/6965793325273120782"
+				    "content": "å½“ç„¶æœ‰å•Šï¼ŒNext.jsæ˜¯ä¸€ä¸ªåŸºäºŽReactçš„æœåŠ¡ç«¯æ¸²æŸ“æ¡†æž¶ã€‚åœ¨å­¦ä¹ ä¹‹å‰ä½ éœ€è¦å…ˆäº†è§£ä¸€äº›ReactæŠ€æœ¯æ ˆçš„åŸºç¡€çŸ¥è¯†ã€‚\n\nå®˜æ–¹æ–‡æ¡£æ˜¯ç»ä½³é€‰æ‹©ï¼šhttps://nextjs.org/docs/getting-started\n\né™¤æ­¤ä¹‹å¤–ï¼Œè¿˜å¯ä»¥å‚è€ƒä»¥ä¸‹èµ„æºï¼š\n\n- Next.js Tutorial - Step-by-step guide for beginnersï¼ˆè‹±æ–‡ï¼‰: https://www.youtube.com/watch?v=tt3PUvhOVzo\n- React æœåŠ¡ç«¯æ¸²æŸ“æ¡†æž¶å¯¹æ¯”-next.js vs after.js: https://juejin.cn/post/6844904061939394574\n- åŸºäºŽ TypeScript å’Œ Next.js çš„å…¨æ ˆç¤¾åŒºé¡¹ç›®å®žæˆ˜æ•™ç¨‹: https://juejin.cn/book/6965793325273120782"
 				  },
 				  {
 				    "role": "user",
-				    "content": "½ñÌìÌìÆøÔõÃ´Ñù\n"
+				    "content": "ä»Šå¤©å¤©æ°”æ€Žä¹ˆæ ·\n"
 				  },
 				  {
 				    "role": "assistant",
-				    "content": "ºÜ±§Ç¸£¬×÷ÎªÒ»¸öAIÓïÑÔÄ£ÐÍ£¬ÎÒÎÞ·¨Ö±½Ó»ñÈ¡µ±Ç°ÌìÆøÐÅÏ¢¡£½¨ÒéÄú¿ÉÒÔÍ¨¹ýËÑË÷ÒýÇæ²éÑ¯µ±µØµÄÌìÆøÔ¤±¨À´»ñÈ¡¾ßÌåÐÅÏ¢¡£"
+				    "content": "å¾ˆæŠ±æ­‰ï¼Œä½œä¸ºä¸€ä¸ªAIè¯­è¨€æ¨¡åž‹ï¼Œæˆ‘æ— æ³•ç›´æŽ¥èŽ·å–å½“å‰å¤©æ°”ä¿¡æ¯ã€‚å»ºè®®æ‚¨å¯ä»¥é€šè¿‡æœç´¢å¼•æ“ŽæŸ¥è¯¢å½“åœ°çš„å¤©æ°”é¢„æŠ¥æ¥èŽ·å–å…·ä½“ä¿¡æ¯ã€‚"
 				  },
 				  {
 				    "role": "user",
-				    "content": "ÖÜ±¨Ä£°å\n"
+				    "content": "å‘¨æŠ¥æ¨¡æ¿\n"
 				  }
 				],
 				stream: true,
@@ -48,17 +48,17 @@
 };
       const encodedData = JSON.stringify(requestData);
 
-      // ½« POST ÇëÇó±êÍ·ÉèÖÃÎª JSON ²¢½« body ÉèÖÃÎª urlencoded Êý¾Ý¡£
+      // å°† POST è¯·æ±‚æ ‡å¤´è®¾ç½®ä¸º JSON å¹¶å°† body è®¾ç½®ä¸º urlencoded æ•°æ®ã€‚
       let requestOptions = {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json"   // ¸ù¾Ý·þÎñÆ÷¶Ë½ÓÊÜÊ²Ã´¸ñÊ½¸Ä±ä´Ë´¦Application/form-dataÒ²¿ÉÄÜÉúÐ§
+          "Content-Type": "application/json"   // æ ¹æ®æœåŠ¡å™¨ç«¯æŽ¥å—ä»€ä¹ˆæ ¼å¼æ”¹å˜æ­¤å¤„Application/form-dataä¹Ÿå¯èƒ½ç”Ÿæ•ˆ
         },
         body: encodedData,
         mode: 'cors'
       };
 
-      // ·¢ËÍ POST ÇëÇó£¬²¢µÃµ½Readable Stream.
+      // å‘é€ POST è¯·æ±‚ï¼Œå¹¶å¾—åˆ°Readable Stream.
       fetch('https://chat.zhengui.fun/api/chat-stream', requestOptions)
         .then(response => {
           if (response.ok) {
@@ -70,20 +70,21 @@
         .then(streamReader => {
           let reader = streamReader.getReader();
           
-          function read(chunk) {   // µÝ¹éÔÄ¶Áchunk£¬Æô¶¯´Ó¿É¶ÁÁ÷ÖÐ¶ÁÈ¡chunk²¢Õ¹Ê¾ËüÃÇµÄ¹ý³Ì¡£
+          function read(chunk) {   // é€’å½’é˜…è¯»chunkï¼Œå¯åŠ¨ä»Žå¯è¯»æµä¸­è¯»å–chunkå¹¶å±•ç¤ºå®ƒä»¬çš„è¿‡ç¨‹ã€‚
             if (chunk.done) {
               console.log("Done reading from stream");
               return;
             }
 
-            // ÏÔÊ¾ÊÕµ½µÄÄÚÈÝ¿é
+            // æ˜¾ç¤ºæ”¶åˆ°çš„å†…å®¹å—
             output.innerHTML += chunk.value;
+	    console.log("data==>"+chunk.value)
 
-            // ¼ÌÐøÔÄ¶Á¿É¶ÁÁ÷ÖÐµÄÆäËûcontent chunk.
+            // ç»§ç»­é˜…è¯»å¯è¯»æµä¸­çš„å…¶ä»–content chunk.
             reader.read().then(read);
           }
 
-          reader.read().then(read);  // ¿ªÊ¼Õâ¸öÔÄ¶ÁÊä³öÁ´Ê½´¦Àí¹ý³Ì
+          reader.read().then(read);  // å¼€å§‹è¿™ä¸ªé˜…è¯»è¾“å‡ºé“¾å¼å¤„ç†è¿‡ç¨‹
 
         })
         .catch(err => {
