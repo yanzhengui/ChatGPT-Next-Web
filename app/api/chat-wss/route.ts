@@ -3,82 +3,46 @@ import http from 'http'
 import { NextRequest } from 'next/server';
 import WebSocket from 'ws'
 
-async function createStream(req: NextRequest) {
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
 
-  let apiKey = process.env.OPENAI_API_KEY;
+const PORT = 80;
 
-  const userApiKey = req.headers.get("token");
-  if (userApiKey) {
-    apiKey = userApiKey;
-    console.log("[Stream] using user api key");
-  }
+// 创建 HTTP 服务器
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World!');
+});
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    method: "POST",
-    body: req.body,
+// 创建 WebSocket 服务器
+const wss = new WebSocket.Server({ noServer: true });
+
+// 监听 HTTP Upgrade 请求
+server.on('upgrade', (req, socket, head) => {
+  wss.handleUpgrade(req, socket, head, (socket) => {
+    wss.emit('connection', socket, req);
+  });
+});
+
+// 处理 WebSocket 连接
+wss.on('connection', (socket: WebSocket) => {
+  console.log('WebSocket connection established');
+
+  // 收到消息时的处理逻辑
+  socket.on('message', (data: WebSocket.Data) => {
+    console.log(`received: ${data}`);
+
+    // 处理完数据后，将结果返回给客户端
+    socket.send('response to client');
   });
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      function onParse(event: any) {
-        if (event.type === "event") {
-          const data = event.data;
-          // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
-          if (data === "[DONE]") {
-            controller.close();
-            return;
-          }
-          try {
-            const json = JSON.parse(data);
-            const text = json.choices[0].delta.content;
-            const queue = encoder.encode(text);
-            controller.enqueue(queue);
-          } catch (e) {
-            controller.error(e);
-          }
-        }
-      }
-
-      const parser = createParser(onParse);
-      for await (const chunk of res.body as any) {
-        parser.feed(decoder.decode(chunk));
-      }
-    },
+  // WebSocket 连接关闭时的处理逻辑
+  socket.on('close', () => {
+    console.log('WebSocket connection closed');
   });
-  return stream;
-}
+});
 
-export async function POST() {
-  const server = new WebSocket.Server({ port: 80 });
-  server.on('connection', (socket: WebSocket) => {
-    console.log('connection established');
-  
-    // 在连接建立后，处理客户端发送的消息
-    socket.on('message', (data: WebSocket.Data) => {
-      console.log(`received: ${data}`);
-      
-      // 接收到消息后，在此处编写相应逻辑处理逻辑，并将结果通过 send 方法发送给客户端
-      socket.send('response to client');
-    });
-  
-    // 连接断开时的处理
-    socket.on('close', () => {
-      console.log('connection closed');
-    });
-  });
+// 启动 HTTP 服务器
+server.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}/`);
+});
 
-  server.addListener('listening', () => {
-    console.log('WebSocket server is listening on port 80...');
-  });
-}
-
-export const config = {
-  runtime: "edge",
-};
 
