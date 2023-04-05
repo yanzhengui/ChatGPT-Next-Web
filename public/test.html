@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Test ReadableStream via API Response</title>
+  </head>
+
+  <body>
+    <h1>Received data:</h1>
+    <div id="output"></div>
+
+    <script>
+      const output = document.getElementById('output');
+
+      // 定义并编码包含要发送到API的数据的JavaScript对象。
+      const requestData = {
+				model: 'gpt-3.5-turbo',
+				messages: [
+				  {
+				    "role": "system",
+				    "content": "This is a summary of the chat history between the AI and the user as a recap: ChatGPT Next移植微信小程序，需要实现语言模型、用户界面设计、后端等。"
+				  },
+				  {
+				    "role": "user",
+				    "content": "有没有next.js的教程"
+				  },
+				  {
+				    "role": "assistant",
+				    "content": "当然有啊，Next.js是一个基于React的服务端渲染框架。在学习之前你需要先了解一些React技术栈的基础知识。\n\n官方文档是绝佳选择：https://nextjs.org/docs/getting-started\n\n除此之外，还可以参考以下资源：\n\n- Next.js Tutorial - Step-by-step guide for beginners（英文）: https://www.youtube.com/watch?v=tt3PUvhOVzo\n- React 服务端渲染框架对比-next.js vs after.js: https://juejin.cn/post/6844904061939394574\n- 基于 TypeScript 和 Next.js 的全栈社区项目实战教程: https://juejin.cn/book/6965793325273120782"
+				  },
+				  {
+				    "role": "user",
+				    "content": "今天天气怎么样\n"
+				  },
+				  {
+				    "role": "assistant",
+				    "content": "很抱歉，作为一个AI语言模型，我无法直接获取当前天气信息。建议您可以通过搜索引擎查询当地的天气预报来获取具体信息。"
+				  },
+				  {
+				    "role": "user",
+				    "content": "周报模板\n"
+				  }
+				],
+				stream: true,
+				temperature: 1,
+				max_tokens: 2000,
+				presence_penalty: 2
+};
+      const encodedData = JSON.stringify(requestData);
+
+      // 将 POST 请求标头设置为 JSON 并将 body 设置为 urlencoded 数据。
+      let requestOptions = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"   // 根据服务器端接受什么格式改变此处Application/form-data也可能生效
+        },
+        body: encodedData,
+        mode: 'cors'
+      };
+
+      // 发送 POST 请求，并得到Readable Stream.
+      fetch('https://chat.zhengui.fun/api/chat-stream', requestOptions)
+        .then(response => {
+          if (response.ok) {
+            return response.body;
+          } else {
+            throw new Error(`Server returned ${response.status}.`);
+          }
+        })
+        .then(streamReader => {
+          let reader = streamReader.getReader();
+          
+          function read(chunk) {   // 递归阅读chunk，启动从可读流中读取chunk并展示它们的过程。
+            if (chunk.done) {
+              console.log("Done reading from stream");
+              return;
+            }
+
+            // 显示收到的内容块
+            output.innerHTML += chunk.value;
+
+            // 继续阅读可读流中的其他content chunk.
+            reader.read().then(read);
+          }
+
+          reader.read().then(read);  // 开始这个阅读输出链式处理过程
+
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    </script>
+  </body>
+</html>
