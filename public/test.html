@@ -84,8 +84,8 @@
 	    console.log("decode==>"+string);
 		  
 	    const buffer = Buffer.from(chunk.value);
-	    const string = buffer.toString('utf8');
-	    console.log("buffer==>"+string);
+	    const string2 = buffer.toString('utf8');
+	    console.log("buffer==>"+string2);
 
             // 继续阅读可读流中的其他content chunk.
             reader.read().then(read);
