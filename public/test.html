@@ -38,7 +38,7 @@
 				  },
 				  {
 				    "role": "user",
-				    "content": "今天天气怎么样\n"
+				    "content": "生成一个周报模板\n"
 				  }
 				],
 				stream: true,
@@ -77,16 +77,10 @@
             }
 
             // 显示收到的内容块
-            output.innerHTML += chunk.value;
-		  
 	    const decoder = new TextDecoder('utf8');
             const string = decoder.decode(chunk.value);
-	    console.log("decode==>"+string);
+            output.innerHTML += string;
 		  
-	    const buffer = Buffer.from(chunk.value);
-	    const string2 = buffer.toString('utf8');
-	    console.log("buffer==>"+string2);
-
             // 继续阅读可读流中的其他content chunk.
             reader.read().then(read);
           }
