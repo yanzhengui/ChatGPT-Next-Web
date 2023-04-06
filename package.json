@@ -4,12 +4,12 @@
   "private": false,
   "license": "Anti 996",
   "scripts": {
-    "dev": "yarn fetch && yarn websocket && next dev",
-    "build": "yarn fetch && yarn websocket && next build",
+    "dev": "yarn fetch && next dev",
+    "build": "yarn fetch && next build",
     "start": "next start",
     "lint": "next lint",
     "fetch": "node ./scripts/fetch-prompts.mjs",
-    "websocket":"node ./scripts/websocket.js",
+    "websocket": "node ./app/api/websocket.js",
     "prepare": "husky install"
   },
   "dependencies": {
