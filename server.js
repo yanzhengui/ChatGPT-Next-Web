@@ -18,7 +18,7 @@ app.prepare().then(() => {
 
   wss.on("connection", onConnection);
 
-  server.listen(443, (err) => {
+  server.listen(3000, (err) => {
     if (err) throw err;
     console.log("> Ready on http://localhost:3001");
   });

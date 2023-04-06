@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "fetch": "node ./scripts/fetch-prompts.mjs",
-    "websocket": "node ./app/api/server.js",
+    "websocket": "node ./server.js",
     "prepare": "husky install"
   },
   "dependencies": {
