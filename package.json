@@ -5,8 +5,8 @@
   "license": "Anti 996",
   "scripts": {
     "dev": "yarn fetch && next dev",
-    "build": "yarn fetch && next build && yarn run build:websockets",
-    "start": "next start",
+    "build": "yarn fetch && next build --verbose",
+    "start": "next start && yarn run build:websockets --verbose",
     "lint": "next lint",
     "fetch": "node ./scripts/fetch-prompts.mjs",
     "build:websockets": "tsc && node scripts/server.js",
