@@ -9,7 +9,9 @@ COPY . .
 
 # Install yarn and dependencies
 RUN apk update && apk add --no-cache --virtual  python make g++ && \
-    npm install -g concurrently && yarn install
+     yarn install
+
+RUN npm install -g concurrently
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
