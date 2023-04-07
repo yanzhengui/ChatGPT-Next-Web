@@ -8,10 +8,15 @@ WORKDIR /app
 COPY . .
 
 # Install yarn and dependencies
-RUN apk update && apk add --no-cache --virtual  python make g++ && \
-     yarn install
+RUN apk update
+RUN yarn install && npm install -g concurrently
+RUN apk add --no-cache git && apk add --no-cache libc6-compat
 
-RUN npm install -g concurrently
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
