@@ -8,9 +8,8 @@ WORKDIR /app
 COPY . .
 
 # Install yarn and dependencies
-RUN apk update && apk add --no-cache --virtual .gyp python make g++ && \
-    yarn install && \
-    apk del .gyp
+RUN apk update && apk add --no-cache --virtual  python make g++ && \
+    yarn install
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
