@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install yarn and dependencies
-RUN apk add --no-cache --virtual .gyp python make g++ && \
+RUN apk update && apk add --no-cache --virtual .gyp python make g++ && \
     yarn install && \
     apk del .gyp
 
