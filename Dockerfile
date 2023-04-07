@@ -1,44 +1,26 @@
-FROM node:18-alpine AS base
+# Base image
+FROM node:18-alpine
 
-FROM base AS deps
-
-RUN apk add --no-cache libc6-compat
-
+# Set working directory
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* ./
+# Copy over files from host to container
+COPY . .
 
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-FROM base AS builder
-
-RUN apk update && apk add --no-cache git
+# Install yarn and dependencies
+RUN apk add --no-cache --virtual .gyp python make g++ && \
+    yarn install && \
+    apk del .gyp
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
 ARG DOCKER=true
 
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
+# Build production codebase
 RUN yarn build
 
-FROM base AS runner
-WORKDIR /app
-
-ENV OPENAI_API_KEY=""
-ENV CODE=""
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/.next/server ./.next/server
-
+# Expose port
 EXPOSE 3000
 
-CMD ["node","server.js"]
+# Start the app when Docker container runs
+CMD ["yarn", "start"]
