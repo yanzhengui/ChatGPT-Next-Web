@@ -1,8 +1,9 @@
 FROM node:18-alpine
 
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
+RUN apk update && apk add --no-cache git
 
+WORKDIR /app
 COPY package.json yarn.lock* package-lock.json* ./
 
 # 安装项目依赖，添加注释
@@ -11,8 +12,6 @@ RUN npm install \
     --production \
     && npm cache clean --force \
     && rm -rf /tmp/*
-
-RUN apk update && apk add --no-cache git
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
