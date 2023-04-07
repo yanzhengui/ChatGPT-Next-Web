@@ -1,28 +1,26 @@
-# Base image
 FROM node:18-alpine
 
-# Set working directory
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy over files from host to container
-COPY . .
+COPY package.json yarn.lock* package-lock.json* ./
 
-# Install yarn and dependencies
-RUN apk update
-RUN yarn install && npm install -g concurrently
-RUN apk add --no-cache git && apk add --no-cache libc6-compat
+# 安装项目依赖，添加注释
+RUN npm install \
+    # 这里可以添加注释
+    --production \
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN apk update && apk add --no-cache git
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
 ARG DOCKER=true
 
-# Build production codebase
+WORKDIR /app
+COPY . .
+
 RUN yarn build
 
 # Expose port
