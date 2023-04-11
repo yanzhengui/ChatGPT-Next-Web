@@ -5,10 +5,10 @@ export function GET(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id }: any = req.query;
-  console.log("获取到id："+id);
+  // const { id }: any = req.query;
+  // console.log("获取到id："+id);
   try {
-    let buffer = getCache(id);
+    let buffer = getCache("A");
     console.log("获取到buffer");
     return res.status(200).json(buffer?.toString());
   } catch (error) {
