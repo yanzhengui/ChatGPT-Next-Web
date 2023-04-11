@@ -9,7 +9,7 @@ export function GET(
   // console.log("获取到id："+id);
   try {
     let buffer = getCache("A");
-    console.log("获取到buffer");
+    console.log("获取到buffer==>"+buffer?.toString());
     return new Response(buffer?.toString());
   } catch (error) {
     console.log("获取缓存失败："+error);
