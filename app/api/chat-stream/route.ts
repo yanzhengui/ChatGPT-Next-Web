@@ -1,9 +1,12 @@
 import { createParser } from "eventsource-parser";
 import { NextRequest } from "next/server";
+import { setCache } from "../cacheUtil";
 
 async function createStream(req: NextRequest) {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
+  const buffer = Buffer.alloc(1024);
+  setCache("A",buffer);
 
   let apiKey = process.env.OPENAI_API_KEY;
 
@@ -45,7 +48,10 @@ async function createStream(req: NextRequest) {
 
       const parser = createParser(onParse);
       for await (const chunk of res.body as any) {
-        parser.feed(decoder.decode(chunk));
+        const strChunk = decoder.decode(chunk);
+        console.log("strChunk==>"+strChunk);
+        parser.feed(strChunk);
+        buffer.write(strChunk,buffer.length,'utf8');
       }
     },
   });
