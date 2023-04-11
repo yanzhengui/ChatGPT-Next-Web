@@ -106,7 +106,7 @@ export async function requestChatStream(
     if (res.ok) {
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-      const buffer = Buffer.alloc(1024);
+      let buffer = Buffer.alloc(1024);
       setCache("A",buffer);
 
       options?.onController?.(controller);
@@ -117,7 +117,10 @@ export async function requestChatStream(
         const content = await reader?.read();
         clearTimeout(resTimeoutId);
         const text = decoder.decode(content?.value);
-        buffer.write(text);
+        // const strBuf = Buffer.from(text);
+        // buffer = Buffer.concat([buffer,strBuf]);
+        buffer.write(text,buffer.length,'utf8')
+        console.log("buffer write==>"+buffer.toString())
         responseText += text;
 
         const done = !content || content.done;
