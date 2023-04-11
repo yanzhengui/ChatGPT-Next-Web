@@ -1,7 +1,7 @@
 import type { ChatRequest, ChatReponse } from "./api/chat/typing";
 import { filterConfig, Message, ModelConfig, useAccessStore } from "./store";
 import Locale from "./locales";
-import { setCache } from "./utils";
+import { setCache } from "./api/cacheUtil";
 
 
 const TIME_OUT_MS = 30000;

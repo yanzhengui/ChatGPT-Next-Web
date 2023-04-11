@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "yarn fetch && next dev",
     "build": "yarn fetch && next build",
-    "start": "concurrently \"next start\" \"yarn run build:websockets\"",
-    "start2": "next start && yarn run build:websockets",
+    "start": "next start",
     "lint": "next lint",
     "fetch": "node ./scripts/fetch-prompts.mjs",
     "build:websockets": "tsc && node scripts/server.js",

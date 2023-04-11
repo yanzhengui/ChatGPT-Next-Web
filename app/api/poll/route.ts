@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getCache } from "../../utils";
+import { getCache } from "../cacheUtil";
 
 
 
