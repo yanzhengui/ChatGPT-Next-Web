@@ -1,6 +1,8 @@
 import type { ChatRequest, ChatReponse } from "./api/chat/typing";
 import { filterConfig, Message, ModelConfig, useAccessStore } from "./store";
 import Locale from "./locales";
+import { setCache } from "./utils";
+
 
 const TIME_OUT_MS = 30000;
 
@@ -104,6 +106,8 @@ export async function requestChatStream(
     if (res.ok) {
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
+      const buffer = Buffer.alloc(1024);
+      setCache("A",buffer);
 
       options?.onController?.(controller);
 
@@ -113,6 +117,7 @@ export async function requestChatStream(
         const content = await reader?.read();
         clearTimeout(resTimeoutId);
         const text = decoder.decode(content?.value);
+        buffer.write(text);
         responseText += text;
 
         const done = !content || content.done;
