@@ -1,6 +1,7 @@
 import { createParser } from "eventsource-parser";
 import { NextRequest } from "next/server";
 import { setCache } from "../cacheUtil";
+import { Buffer } from "buffer";
 
 async function createStream(req: NextRequest) {
   const encoder = new TextEncoder();
