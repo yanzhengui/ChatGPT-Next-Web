@@ -10,9 +10,9 @@ export function GET(
   try {
     let buffer = getCache("A");
     console.log("获取到buffer");
-    return res.status(200).json(buffer?.toString());
+    return new Response(buffer?.toString());
   } catch (error) {
     console.log("获取缓存失败："+error);
-    return res.status(500).json({ message: '获取失败' });
+    return new Response(JSON.stringify(error));
   }
 }
